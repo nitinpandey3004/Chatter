@@ -6,6 +6,10 @@ import cors from "cors";
 // mongo connection
 import "./config/mongo.js";
 
+// socket configuration
+import * as io from "socket.io";
+import WebSockets from "./utils/WebSockets.js";
+
 // routes
 import indexRouter from "./routes/index.js";
 import userRouter from "./routes/user.js";
@@ -13,6 +17,9 @@ import chatRoomRouter from "./routes/chatRoom.js";
 import deleteRouter from "./routes/delete.js";
 // middlewares
 import { decode } from './middlewares/jwt.js'
+
+import dotenv from "dotenv";
+dotenv.config();
 
 const app = express();
 
@@ -39,6 +46,10 @@ app.use('*', (req, res) => {
 
 /** Create HTTP server. */
 const server = http.createServer(app);
+/** Create socket connection */
+const socketio = new io.Server(server);
+global.io = socketio.listen(server);
+global.io.on('connection', WebSockets.connection)
 /** Listen on provided port, on all network interfaces. */
 server.listen(port);
 /** Event listener for HTTP server "listening" event. */

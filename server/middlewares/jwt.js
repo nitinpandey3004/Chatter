@@ -2,7 +2,7 @@ import jwt from 'jsonwebtoken';
 // models
 import UserModel from '../models/User.js';
 
-const SECRET_KEY = 'some-secret-key';
+const SECRET_KEY = 'some-secret-key1';
 
 export const encode = async (req, res, next) => {
     try {
