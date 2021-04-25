@@ -21,10 +21,22 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const app = express();
-
-app.use(cors);
+let whitelist = ['http://localhost:3000','http://localhost:80'];
+let corsOptions = {
+    origin: (origin, callback)=>{
+      console.log("Checking " + origin);
+        if (whitelist.indexOf(origin) !== -1) {
+            callback(null, true)
+        } else {
+            callback(new Error('Not allowed by CORS'))
+        }
+    },credentials: true
+}
+app.use(cors(corsOptions));
+app.use(cors());
 app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Credentials', 'true');
   next();
 })
 
@@ -56,7 +68,8 @@ import * as io from "socket.io";
 // global.io = new Server(server, {
 
 // });
-const socketio = new io.Server(server);
+const socketio = new io.Server(server, { cors: 
+  { origin: "http://localhost:3000", methods: ["GET", "POST"], transports: ['websocket', 'polling'], credentials: true }, allowEIO3: true });
 global.io = socketio.listen(server);
 // global.io.on('connection', (client) => {
 //   new WebSockets().connection(client);
@@ -75,7 +88,7 @@ global.io.on('connect', (socket) => {
     socket.emit('message', { user: 'admin', text: `${user.name}, welcome to room ${user.room}.`});
     socket.broadcast.to(user.room).emit('message', { user: 'admin', text: `${user.name} has joined!` });
 
-    io.to(user.room).emit('roomData', { room: user.room, users: getUsersInRoom(user.room) });
+    global.io.to(user.room).emit('roomData', { room: user.room, users: getUsersInRoom(user.room) });
 
     callback();
   });
@@ -83,7 +96,7 @@ global.io.on('connect', (socket) => {
   socket.on('sendMessage', (message, callback) => {
     const user = getUser(socket.id);
     if(user) {
-      io.to(user.room).emit('message', { user: user.name, text: message });
+      global.io.to(user.room).emit('message', { user: user.name, text: message });
     }
 
     callback();
@@ -93,8 +106,8 @@ global.io.on('connect', (socket) => {
     const user = removeUser(socket.id);
 
     if(user) {
-      io.to(user.room).emit('message', { user: 'Admin', text: `${user.name} has left.` });
-      io.to(user.room).emit('roomData', { room: user.room, users: getUsersInRoom(user.room)});
+      global.io.to(user.room).emit('message', { user: 'Admin', text: `${user.name} has left.` });
+      global.io.to(user.room).emit('roomData', { room: user.room, users: getUsersInRoom(user.room)});
     }
   })
 });

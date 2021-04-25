@@ -9,7 +9,7 @@ import TextContainer from "./../TextContainer/TextContainer";
 import ChatHelper from './ChatHelper.js';
 
 let socket;
-const ENDPOINT = 'http://localhost:5000/';
+const ENDPOINT = 'http://localhost:4000/';
 
 const Chat = ({location}) => {
     const [name, setName] = useState('');
