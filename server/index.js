@@ -65,52 +65,13 @@ app.use('*', (req, res) => {
 const server = http.createServer(app);
 /** Create socket connection */
 import * as io from "socket.io";
-// global.io = new Server(server, {
-
-// });
 const socketio = new io.Server(server, { cors: 
   { origin: "http://localhost:3000", methods: ["GET", "POST"], transports: ['websocket', 'polling'], credentials: true }, allowEIO3: true });
 global.io = socketio.listen(server);
-// global.io.on('connection', (client) => {
-//   new WebSockets().connection(client);
-// })
-import { addUser, removeUser, getUser, getUsersInRoom } from "./tempUsers.js";
-global.io.on('connect', (socket) => {
-  socket.on('join', ({ name, room }, callback) => {
-    const { error, user } = addUser({ id: socket.id, name, room });
+global.io.on('connect', (client) => {
+  new WebSockets().connection(client);
+})
 
-    if(error) {
-      return callback(error)
-    }
-
-    socket.join(user.room);
-
-    socket.emit('message', { user: 'admin', text: `${user.name}, welcome to room ${user.room}.`});
-    socket.broadcast.to(user.room).emit('message', { user: 'admin', text: `${user.name} has joined!` });
-
-    global.io.to(user.room).emit('roomData', { room: user.room, users: getUsersInRoom(user.room) });
-
-    callback();
-  });
-
-  socket.on('sendMessage', (message, callback) => {
-    const user = getUser(socket.id);
-    if(user) {
-      global.io.to(user.room).emit('message', { user: user.name, text: message });
-    }
-
-    callback();
-  });
-
-  socket.on('disconnect', () => {
-    const user = removeUser(socket.id);
-
-    if(user) {
-      global.io.to(user.room).emit('message', { user: 'Admin', text: `${user.name} has left.` });
-      global.io.to(user.room).emit('roomData', { room: user.room, users: getUsersInRoom(user.room)});
-    }
-  })
-});
 /** Listen on provided port, on all network interfaces. */
 server.listen(port);
 /** Event listener for HTTP server "listening" event. */
