@@ -65,10 +65,17 @@ app.use('*', (req, res) => {
 const server = http.createServer(app);
 /** Create socket connection */
 import * as io from "socket.io";
-const socketio = new io.Server(server, { cors: 
-  { origin: "http://localhost:3000", methods: ["GET", "POST"], transports: ['websocket', 'polling'], credentials: true }, allowEIO3: true });
+const socketio = new io.Server({ cors: { 
+  origin: "http://localhost:3000", 
+  noServer: true, 
+  methods: ["GET", "POST"], 
+  transports: ['websocket', 'polling'], 
+  credentials: true 
+  }, 
+  allowEIO3: true 
+});
 global.io = socketio.listen(server);
-global.io.on('connect', (client) => {
+global.io.on('connection', (client) => {
   new WebSockets().connection(client);
 })
 
