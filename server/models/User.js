@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import { v4 as uuidv4 } from "uuid";
+import bcrypt  from 'bcrypt';
 
 export const USER_TYPES = {
   CONSUMER: "consumer",
@@ -15,6 +16,13 @@ const userSchema = new mongoose.Schema(
     firstName: String,
     lastName: String,
     type: String,
+    email: {
+      type: String, 
+      required: true, 
+      unique:true,
+      createIndexes: { unique: true },
+    },
+    password: {type: String, required: true},
   },
   {
     timestamps: true,
@@ -22,13 +30,9 @@ const userSchema = new mongoose.Schema(
   }
 );
 
-userSchema.statics.createUser = async function (
-	firstName, 
-    	lastName, 
-    	type
-) {
+userSchema.statics.createUser = async function (userData) {
   try {
-    const user = await this.create({ firstName, lastName, type });
+    const user = await this.create(userData);
     return user;
   } catch (error) {
     throw error;
@@ -54,6 +58,22 @@ userSchema.statics.getUserByIds = async function (ids) {
     } catch (error) {
       throw error;
     }
+}
+
+userSchema.statics.getUserForLogin = async function (userName, password) {
+  try {
+    const user = await this.findOne({email: userName});
+    if (!user) {
+        throw ({ error: 'No user with given email found' });
+    }
+    const validPassword = await bcrypt.compare(password, user.password);
+    if(!validPassword) {
+      throw ({ error: 'Wrong credentials' });
+    }
+    return user;
+  } catch (error) {
+    throw error;
+  }
 }
 
 userSchema.statics.getUsers = async function () {

@@ -1,5 +1,6 @@
 // utils
 import makeValidation from '@withvoid/make-validation';
+import bcrypt from 'bcrypt';
 // models
 import UserModel, { USER_TYPES } from '../models/User.js';
 
@@ -28,13 +29,27 @@ export default {
             firstName: { type: types.string },
             lastName: { type: types.string },
             type: { type: types.enum, options: { enum: USER_TYPES } },
+            email: {type: types.string},
+            password: {type: types.string},
           }
         }));
         if (!validation.success) {
           return res.status(400).json(validation)
         }
-        const { firstName, lastName, type } = req.body;
-        const user = await UserModel.createUser(firstName, lastName, type);
+        const { firstName, lastName, type, email, password } = req.body;
+        const hashedPass = await bcrypt.hash(password, 10);
+        if(!hashedPass){
+          return res.status(400).json({
+            message: err
+          })
+        }
+        const user = await UserModel.createUser({
+          firstName,
+          lastName,
+          type,
+          email,
+          password: hashedPass,
+        });
         return res.status(200).json({ success: true, user });
       } catch(error) {
         return res.status(500).json({
