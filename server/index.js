@@ -21,7 +21,7 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const app = express();
-let whitelist = ['http://localhost:3000','http://localhost:80'];
+let whitelist = ['http://localhost:3000','http://localhost:80','http://localhost:4000'];
 let corsOptions = {
     origin: (origin, callback)=>{
       console.log("Checking " + origin);

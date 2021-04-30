@@ -38,6 +38,8 @@ class WebSockets {
         }
       });
 
+      client
+
 
     //   // event fired when the chat room is disconnected
     //   client.on("disconnect", () => {
