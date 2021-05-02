@@ -6,8 +6,8 @@ const SECRET_KEY = 'some-secret-key1';
 
 export const encode = async (req, res, next) => {
     try {
-        const {username, password} = req.body;
-        const user = await UserModel.getUserForLogin(username, password);
+        const {email, password} = req.body;
+        const user = await UserModel.getUserForLogin(email, password);
         const payload = {
             userId: user._id,
             userType: user.type,
