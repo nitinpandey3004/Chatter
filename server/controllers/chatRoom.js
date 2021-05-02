@@ -25,11 +25,11 @@ export default {
                 return res.status(400).json({ ...validation })
             }
         
-            const { userIds, type } = req.body;
+            const { userIds, type, name } = req.body;
             const { userId: chatInitiator } = req;
             const allUserIds = [...userIds, chatInitiator];
             console.log("Before intiating");
-            const chatRoom = await ChatRoomModel.initiateChat(allUserIds, type, chatInitiator);
+            const chatRoom = await ChatRoomModel.initiateChat(allUserIds, type, chatInitiator, name);
             return res.status(200).json({ success: true, chatRoom });
           } catch (error) {
             

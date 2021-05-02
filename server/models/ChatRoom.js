@@ -15,6 +15,7 @@ const chatRoomSchema = new mongoose.Schema(
     userIds: Array,
     type: String,
     chatInitiator: String,
+    name: String,
   },
   {
     timestamps: true,
@@ -23,7 +24,7 @@ const chatRoomSchema = new mongoose.Schema(
 );
 
 chatRoomSchema.statics.initiateChat = async function (
-	userIds, type, chatInitiator
+	userIds, type, chatInitiator,name
 ) {
   try {
     const availableRoom = await this.findOne({
@@ -32,6 +33,7 @@ chatRoomSchema.statics.initiateChat = async function (
         $all: [...userIds],
       },
       type,
+      name,
     });
     if (availableRoom) {
       return {

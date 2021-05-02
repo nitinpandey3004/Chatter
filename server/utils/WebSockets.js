@@ -1,10 +1,14 @@
 import { addUser, removeUser, getUser, getUsersInRoom } from "./../tempUsers.js";
+import {decodeToken} from "./../middlewares/jwt.js";
 class WebSockets {
     users = [];
     connection(client) {
       console.log("User Connected");
-      client.on('join', ({ name, room }, callback) => {
-        const { error, user } = addUser({ id: client.id, name, room });
+      client.on('join', async ({ token, roomId }, callback) => {
+
+        const {name, email, userId} = await decodeToken(token);
+        console.log(token + "  " + roomId);
+        const { error, user } = addUser({ id: client.id, name, room: roomId });
     
         if(error) {
           return callback(error)

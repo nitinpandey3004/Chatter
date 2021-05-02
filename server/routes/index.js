@@ -19,6 +19,8 @@ router
       .json({
         success: true,
         authToken: req.authToken,
+        email: req.email,
+        userId: req.userId,
       });
   });
 
