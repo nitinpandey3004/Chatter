@@ -38,7 +38,8 @@ import PrivateRoute from "./components/PrivateRoute/PrivateRoute";
 // };
 
 const App = () => {
-    const { token, setToken } = useToken();
+    const { token, setData } = useToken();
+    console.log("Lala: " + setData());
     // if(!token) {
     //     return <Login setToken={setToken} />
     // }
@@ -65,10 +66,11 @@ const App = () => {
             <Switch>
               <Route exact path='/' component={Home} />
               <Route path="/sign-in" render ={(props) => (
-                  <Login setToken={setToken}/>
+                  <Login setData={setData}/>
               )}/>
               <Route path="/sign-up" component={SignUp} />
               <PrivateRoute path="/join" component = {Join} />
+              <PrivateRoute path="/chat" component = {Chat} />
             </Switch>
           </div>
         </div>

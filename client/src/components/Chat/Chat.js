@@ -7,28 +7,28 @@ import Input from "./../Input/Input";
 import Messages from "./../Messages/Messages";
 import TextContainer from "./../TextContainer/TextContainer";
 import ChatHelper from './ChatHelper.js';
+import useToken from "../../helpers/useToken";
 
 let socket;
 const ENDPOINT = 'http://localhost:4000/';
 
 const Chat = ({location}) => {
-    const [name, setName] = useState('');
-    const [room, setRoom] = useState('');
+    const { token, getData } = useToken();
+    const [roomId, setRoomId] = useState('');
     const [users, setUsers] = useState('');
     const [message, setMessage] = useState('');
     const [messages, setMessages] = useState([]);
 
     useEffect(() => {
-        const { name, room } = queryString.parse(location.search);
+        const { roomId } = queryString.parse(location.search);
 
         socket = io(ENDPOINT, {
             rememberUpgrade: true
         });
 
-        setRoom(room);
-        setName(name)
+        setRoomId(roomId);
 
-        socket.emit('join', { name, room }, (error) => {
+        socket.emit('join', { token, roomId }, (error) => {
             if(error) {
                 alert(error);
             }
@@ -56,11 +56,12 @@ const Chat = ({location}) => {
     return (
         <div className="outerContainer">
           <div className="container">
-              <InfoBar room={room} />
+              In Room
+              {/* <InfoBar room={room} />
               <Messages messages={messages} name={name} />
-              <Input message={message} setMessage={setMessage} sendMessage={sendMessage} />
+              <Input message={message} setMessage={setMessage} sendMessage={sendMessage} /> */}
           </div>
-          <TextContainer users={users}/>
+          {/* <TextContainer users={users}/> */}
         </div>
       );
 };

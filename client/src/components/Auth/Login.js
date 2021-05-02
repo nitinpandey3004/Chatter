@@ -46,7 +46,7 @@ async function loginUser(credentials) {
 //     )
 // }
 
-const Login = ({setToken}) => {
+const Login = ({setData}) => {
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -55,8 +55,9 @@ const Login = ({setToken}) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const {authToken} = await loginUser({email, password});
-            setToken(authToken);
+            const data = await loginUser({email, password});
+            console.log(setData);
+            setData(data);
             history.push("/");
         } catch(e) {
             alert(e.message);
@@ -99,7 +100,7 @@ const Login = ({setToken}) => {
 }
 
 Login.propTypes = {
-    setToken: PropTypes.func.isRequired
+    setData: PropTypes.func.isRequired
 }
 
 export default Login;

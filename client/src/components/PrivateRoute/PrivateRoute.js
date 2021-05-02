@@ -5,7 +5,7 @@ import useToken from './../../helpers/useToken';
 
 const PrivateRoute = ({ component: Component, ...rest }) => {
 
-    const { token, setToken } = useToken();
+    const { token, setData } = useToken();
     // if(!token) {
     //     return <Login setToken={setToken} />
     // }
