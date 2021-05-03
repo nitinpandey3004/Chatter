@@ -65,6 +65,8 @@ const Chat = ({location}) => {
     //     </div>
     // );
 
+    // https://www.bootdey.com/snippets/view/facebook-messenger-chat
+
     return (
         <div>
           <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" />
@@ -76,120 +78,12 @@ const Chat = ({location}) => {
                   <div className="col-inside-lg decor-default">
                     <div className="chat-body">
                       <h6>Mini Chat</h6>
-                      <div className="answer left">
-                        <div className="avatar">
-                          <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="User name" />
-                          <div className="status offline" />
-                        </div>
-                        <div className="name">Alexander Herthic</div>
-                        <div className="text">
-                          Lorem ipsum dolor amet, consectetur adipisicing elit Lorem ipsum dolor amet, consectetur adipisicing elit Lorem ipsum dolor amet, consectetur adiping elit
-                        </div>
-                        <div className="time">5 min ago</div>
-                      </div>
-                      <div className="answer right">
-                        <div className="avatar">
-                          <img src="https://bootdey.com/img/Content/avatar/avatar2.png" alt="User name" />
-                          <div className="status offline" />
-                        </div>
-                        <div className="name">Alexander Herthic</div>
-                        <div className="text">
-                          Lorem ipsum dolor amet, consectetur adipisicing elit Lorem ipsum dolor amet, consectetur adipisicing elit Lorem ipsum dolor amet, consectetur adiping elit
-                        </div>
-                        <div className="time">5 min ago</div>
-                      </div>
-                      <div className="answer left">
-                        <div className="avatar">
-                          <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="User name" />
-                          <div className="status online" />
-                        </div>
-                        <div className="name">Alexander Herthic</div>
-                        <div className="text">
-                          ...
-                        </div>
-                        <div className="time">5 min ago</div>
-                      </div>
-                      <div className="answer right">
-                        <div className="avatar">
-                          <img src="https://bootdey.com/img/Content/avatar/avatar2.png" alt="User name" />
-                          <div className="status busy" />
-                        </div>
-                        <div className="name">Alexander Herthic</div>
-                        <div className="text">
-                          It is a long established fact that a reader will be. Thanks Mate!
-                        </div>
-                        <div className="time">5 min ago</div>
-                      </div>
-                      <div className="answer right">
-                        <div className="avatar">
-                          <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="User name" />
-                          <div className="status off" />
-                        </div>
-                        <div className="name">Alexander Herthic</div>
-                        <div className="text">
-                          It is a long established fact that a reader will be. Thanks Mate!
-                        </div>
-                        <div className="time">5 min ago</div>
-                      </div>
-                      <div className="answer left">
-                        <div className="avatar">
-                          <img src="https://bootdey.com/img/Content/avatar/avatar2.png" alt="User name" />
-                          <div className="status offline" />
-                        </div>
-                        <div className="name">Alexander Herthic</div>
-                        <div className="text">
-                          Lorem ipsum dolor amet, consectetur adipisicing elit Lorem ipsum dolor amet, consectetur adipisicing elit Lorem ipsum dolor amet, consectetur adiping elit
-                        </div>
-                        <div className="time">5 min ago</div>
-                      </div>
-                      <div className="answer right">
-                        <div className="avatar">
-                          <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="User name" />
-                          <div className="status offline" />
-                        </div>
-                        <div className="name">Alexander Herthic</div>
-                        <div className="text">
-                          Lorem ipsum dolor amet, consectetur adipisicing elit Lorem ipsum dolor amet, consectetur adipisicing elit Lorem ipsum dolor amet, consectetur adiping elit
-                        </div>
-                        <div className="time">5 min ago</div>
-                      </div>
-                      <div className="answer left">
-                        <div className="avatar">
-                          <img src="https://bootdey.com/img/Content/avatar/avatar2.png" alt="User name" />
-                          <div className="status online" />
-                        </div>
-                        <div className="name">Alexander Herthic</div>
-                        <div className="text">
-                          ...
-                        </div>
-                        <div className="time">5 min ago</div>
-                      </div>
-                      <div className="answer right">
-                        <div className="avatar">
-                          <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="User name" />
-                          <div className="status busy" />
-                        </div>
-                        <div className="name">Alexander Herthic</div>
-                        <div className="text">
-                          It is a long established fact that a reader will be. Thanks Mate!
-                        </div>
-                        <div className="time">5 min ago</div>
-                      </div>
-                      <div className="answer right">
-                        <div className="avatar">
-                          <img src="https://bootdey.com/img/Content/avatar/avatar2.png" alt="User name" />
-                          <div className="status off" />
-                        </div>
-                        <div className="name">Alexander Herthic</div>
-                        <div className="text">
-                          It is a long established fact that a reader will be. Thanks Mate!
-                        </div>
-                        <div className="time">5 min ago</div>
-                      </div>
+                      <Messages messages={messages} userId={getData('userId')} />
                       <div className="answer-add" style={{ outline: 'none'}}>
-                        <input autoFocus placeholder="Write a message" style={{ outline: 'none'}} />
+                        {/* <input autoFocus placeholder="Write a message" style={{ outline: 'none'}} />
                         <span className="answer-btn answer-btn-1" />
-                        <span className="answer-btn answer-btn-2" />
+                        <span className="answer-btn answer-btn-2" /> */}
+                        <Input message={message} setMessage={setMessage} sendMessage={sendMessage} />
                       </div>
                     </div>
                   </div>

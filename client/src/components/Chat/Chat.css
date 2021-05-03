@@ -225,12 +225,12 @@
     /* padding: 20px; */
     background: #ffffff;
 }
-.chat-body .answer-add input {
+.chat-body .answer-add .form .group input {
     border: none;
     border:solid 1px #000000;
     background: none;
     display: block;
-    width: 100%;
+    width: 90%;
     font-size: 16px;
     line-height: 30px;
     padding: 0;

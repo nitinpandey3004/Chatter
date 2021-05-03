@@ -3,16 +3,20 @@ import React from 'react';
 import './Input.css';
 
 const Input = ({ setMessage, sendMessage, message }) => (
-  <form className="form">
+  <form className="form form-inline">
+    <div className="group" style={{width:'90%'}}>
     <input
-      className="input"
+      autoFocus
+      className="input "
       type="text"
+      style={{ outline: 'none'}}
       placeholder="Type a message..."
       value={message}
       onChange={({ target: { value } }) => setMessage(value)}
       onKeyPress={event => event.key === 'Enter' ? sendMessage(event) : null}
     />
-    <button className="sendButton" onClick={e => sendMessage(e)}>Send</button>
+    </div>
+    <button className="sendButton btn btn-primary mb-1" onClick={e => sendMessage(e)}>Send</button>
   </form>
 )
 

@@ -8,7 +8,7 @@ class WebSockets {
 
         const {name, email, userId} = await decodeToken(token);
         console.log(token + "  " + roomId);
-        const { error, user } = addUser({ id: client.id, name, room: roomId });
+        const { error, user } = addUser({ id: client.id, name, room: roomId, email, userId });
     
         if(error) {
           return callback(error)
@@ -25,9 +25,15 @@ class WebSockets {
       });
     
       client.on('sendMessage', (message, callback) => {
+        console.log("message: " + message);
         const user = getUser(client.id);
         if(user) {
-          global.io.to(user.room).emit('message', { user: user.name, text: message });
+          global.io.to(user.room).emit('message', { 
+            user: user.name, 
+            text: message,
+            userId: user.userId,
+            email: user.email,
+          });
         }
     
         callback();
