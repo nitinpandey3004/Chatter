@@ -1,4 +1,6 @@
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
+import '../node_modules/jquery/dist/jquery.js';
+import '../node_modules/jquery.nicescroll/dist/jquery.nicescroll.js';
 import React from "react";
 import './App.css';
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
