@@ -31,11 +31,16 @@ export default function useToken() {
     }
   }
 
+  const clearData = (data) => {
+    localStorage.removeItem('token');
+  }
+
   return {
     setToken: saveToken,
     setData: saveData,
     token: getToken(),
     saveData,
     getData,
+    clearData,
   }
 }

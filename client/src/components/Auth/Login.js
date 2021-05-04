@@ -46,7 +46,7 @@ async function loginUser(credentials) {
 //     )
 // }
 
-const Login = ({setData}) => {
+const Login = ({setData, setIsLoggedIn}) => {
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -59,6 +59,7 @@ const Login = ({setData}) => {
             console.log(setData);
             setData(data);
             history.push("/");
+            setIsLoggedIn(true);
         } catch(e) {
             alert(e.message);
         }
