@@ -9,9 +9,21 @@ import TextContainer from "./../TextContainer/TextContainer";
 import ChatHelper from './ChatHelper.js';
 import useToken from "../../helpers/useToken";
 import '../../../node_modules/jquery.nicescroll/dist/jquery.nicescroll.js';
+import Constant from '../../config/index';
 
 let socket;
-const ENDPOINT = 'http://localhost:4000/';
+const ENDPOINT = `${Constant.SERVER_URL}/`;
+
+const getPreviousChatData = async (roomId, token) => {
+  return fetch(`${Constant.SERVER_URL}/room/${roomId}`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    }
+  })
+  .then(data => data.json())
+}
 
 const Chat = ({location}) => {
     const { token, getData } = useToken();
@@ -34,6 +46,11 @@ const Chat = ({location}) => {
                 alert(error);
             }
         });
+        getPreviousChatData(roomId, token).then((data) => {
+          console.log(data);
+          setMessages(messages => messages.concat(data['conversation']) );
+          console.log(messages);
+        });
     }, [ENDPOINT, location.search]);
 
     useEffect(() => {
@@ -50,7 +67,7 @@ const Chat = ({location}) => {
         event.preventDefault();
 
         if(message) {
-            socket.emit('sendMessage', message, () => setMessage(''));
+            socket.emit('sendMessage', {roomId, message}, () => setMessage(''));
         }
     }
     

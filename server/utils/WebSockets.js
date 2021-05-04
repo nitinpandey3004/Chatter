@@ -1,5 +1,6 @@
 import { addUser, removeUser, getUser, getUsersInRoom } from "./../tempUsers.js";
 import {decodeToken} from "./../middlewares/jwt.js";
+import ChatMessageModel from "./../models/ChatMessage.js";
 class WebSockets {
     users = [];
     connection(client) {
@@ -16,24 +17,27 @@ class WebSockets {
     
         client.join(user.room);
     
-        client.emit('message', { user: 'admin', text: `${user.name}, welcome to room ${user.room}.`});
-        client.broadcast.to(user.room).emit('message', { user: 'admin', text: `${user.name} has joined!` });
+        client.emit('message', this.getAdminMessage(`${user.name}, welcome to room ${user.room}.`));
+        client.broadcast.to(user.room).emit('message', this.getAdminMessage(`${user.name} has joined!`));
     
         global.io.to(user.room).emit('roomData', { room: user.room, users: getUsersInRoom(user.room) });
     
         callback();
       });
     
-      client.on('sendMessage', (message, callback) => {
+      client.on('sendMessage', async ({roomId, message}, callback) => {
         console.log("message: " + message);
         const user = getUser(client.id);
         if(user) {
-          global.io.to(user.room).emit('message', { 
-            user: user.name, 
-            text: message,
-            userId: user.userId,
-            email: user.email,
-          });
+          const post = await ChatMessageModel.createPostInChatRoom(roomId, {messageText: message}, user.userId);
+          // global.io.sockets.in(roomId).emit('new message', { message: post });
+          // global.io.to(user.room).emit('message', { 
+          //   user: user.name, 
+          //   text: message,
+          //   userId: user.userId,
+          //   email: user.email,
+          // });
+          global.io.to(user.room).emit('message', post);
         }
     
         callback();
@@ -43,12 +47,10 @@ class WebSockets {
         const user = removeUser(client.id);
     
         if(user) {
-          global.io.to(user.room).emit('message', { user: 'Admin', text: `${user.name} has left.` });
+          global.io.to(user.room).emit('message', this.getAdminMessage(`${user.name} has left.`));
           global.io.to(user.room).emit('roomData', { room: user.room, users: getUsersInRoom(user.room)});
         }
       });
-
-      client
 
 
     //   // event fired when the chat room is disconnected
@@ -94,6 +96,26 @@ class WebSockets {
     //       socketConn.join(room);
     //     }
     //   });
+    }
+
+    getAdminMessage(message) {
+      return {
+        "message": {
+            "messageText": message
+        },
+        "postedByUser": {
+            "_id": "1",
+            "firstName": "Admin",
+            "lastName": "",
+            "type": "consumer",
+            "email": "test@test.com",
+            "password": "$2b$10$xvJuoi2wDZnAln0OWoIy2uVjggIb5M5Uxxb2F8v5W62ARIEA9Uzn2",
+            "createdAt": "2021-05-02T15:21:21.941Z",
+            "updatedAt": "2021-05-02T15:21:21.941Z",
+            "__v": 0
+        },
+        "admin": true
+      }
     }
   }
   

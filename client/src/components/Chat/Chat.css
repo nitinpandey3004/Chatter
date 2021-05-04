@@ -196,6 +196,12 @@
     float: right;
 }
 
+.chat-body .answer.center {
+    padding: 0 0px 0 0;
+    text-align: center;
+    float: center;
+}
+
 .chat-body .answer.right .avatar {
     right: 0;
 }

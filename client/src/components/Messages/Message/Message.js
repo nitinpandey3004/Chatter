@@ -4,10 +4,15 @@ import './Message.css';
 
 import ReactEmoji from 'react-emoji';
 
-const Message = ({ message: { text, userId: messageUserId, user }, userId }) => {
+const Message = ({ message, userId }) => {
+  console.log(message);
+  const user = message['postedByUser']['firstName'] + " " +  message['postedByUser']['lastName'];
+  const messageUserId = message['postedByUser']['_id'];
+  const text = message['message']['messageText'];
   let isSentByCurrentUser = false;
+  let isAdmin = message['admin'];
 
-  const trimmedName = user.trim().toLowerCase();
+  const trimmedName = user ? user.trim().toLowerCase() : "";
 
   // if(user === trimmedName) {
   //   isSentByCurrentUser = true;
@@ -38,7 +43,18 @@ const Message = ({ message: { text, userId: messageUserId, user }, userId }) => 
   // );
 
   return (
-    isSentByCurrentUser
+    isAdmin ? (
+        <div className="answer center">
+          {/* <div className="avatar">
+            <img src="https://bootdey.com/img/Content/avatar/avatar2.png" alt="User name" />
+            <div className="status online" />
+          </div> */}
+          {/* <div className="name">{trimmedName}</div> */}
+          <div className="text">{ReactEmoji.emojify(text)}</div>
+          {/* <div className="time">5 min ago</div> */}
+        </div>
+    ) : (
+      isSentByCurrentUser
       ? (
         <div className="answer right">
           <div className="avatar">
@@ -61,6 +77,7 @@ const Message = ({ message: { text, userId: messageUserId, user }, userId }) => 
           <div className="time">5 min ago</div>
         </div>
         )
+    )
   );
 }
 
