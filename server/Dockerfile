@@ -1,6 +1,7 @@
-FROM node:15.8.0
+FROM node:15-alpine
 WORKDIR /app
 COPY ["package.json", "package-lock.json*", "./"]
-RUN npm install --production
+RUN npm config set strict-ssl false
+RUN npm install
 COPY . .
 CMD [ "node", "index.js" ]
