@@ -44,7 +44,7 @@ chatRoomSchema.statics.initiateChat = async function (
       };
     }
 
-    const newRoom = await this.create({ userIds, type, chatInitiator });
+    const newRoom = await this.create({ userIds, type, chatInitiator, name });
     return {
       isNew: true,
       message: 'creating a new chatroom',

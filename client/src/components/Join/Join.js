@@ -61,7 +61,8 @@ const Join = () => {
         try {
             const data = await joinRoom({
                 userIds: [getData("userId")],
-                "type": "consumer-to-consumer",
+                type: "consumer-to-consumer",
+                name: room,
             }, token);
             history.push(`/Chat?roomId=${data['chatRoom']['chatRoomId']}`);
         } catch(e) {

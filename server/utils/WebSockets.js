@@ -1,6 +1,7 @@
 import { addUser, removeUser, getUser, getUsersInRoom } from "./../tempUsers.js";
 import {decodeToken} from "./../middlewares/jwt.js";
 import ChatMessageModel from "./../models/ChatMessage.js";
+import ChatRoomModel from "./../models/ChatRoom.js";
 class WebSockets {
     users = [];
     connection(client) {
@@ -8,7 +9,8 @@ class WebSockets {
       client.on('join', async ({ token, roomId }, callback) => {
 
         const {name, email, userId} = await decodeToken(token);
-        console.log(token + "  " + roomId);
+        const room = await ChatRoomModel.getChatRoomByRoomId(roomId)
+        console.log(token + "  " + JSON.stringify(room));
         const { error, user } = addUser({ id: client.id, name, room: roomId, email, userId });
     
         if(error) {
@@ -17,7 +19,7 @@ class WebSockets {
     
         client.join(user.room);
     
-        client.emit('message', this.getAdminMessage(`${user.name}, welcome to room ${user.room}.`));
+        client.emit('message', this.getAdminMessage(`${user.name}, welcome to room ${room.name}.`));
         client.broadcast.to(user.room).emit('message', this.getAdminMessage(`${user.name} has joined!`));
     
         global.io.to(user.room).emit('roomData', { room: user.room, users: getUsersInRoom(user.room) });
@@ -107,12 +109,7 @@ class WebSockets {
             "_id": "1",
             "firstName": "Admin",
             "lastName": "",
-            "type": "consumer",
-            "email": "test@test.com",
-            "password": "$2b$10$xvJuoi2wDZnAln0OWoIy2uVjggIb5M5Uxxb2F8v5W62ARIEA9Uzn2",
-            "createdAt": "2021-05-02T15:21:21.941Z",
-            "updatedAt": "2021-05-02T15:21:21.941Z",
-            "__v": 0
+            "type": "support",
         },
         "admin": true
       }
