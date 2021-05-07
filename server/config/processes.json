@@ -1,0 +1,13 @@
+{
+    "apps": [
+        {
+            "name": "api",
+            "script": "index.js",
+            "merge_logs": true,
+            "exec_mode": "cluster",
+            "max_restarts": 20,
+            "instances": 2,
+            "max_memory_restart": "200M"
+        }
+    ]
+}

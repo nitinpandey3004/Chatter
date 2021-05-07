@@ -1,7 +1,6 @@
 const config = {
     db: {
-      url: 'localhost:27017',
-      name: 'chatdb'
+      url: process.env.MONGO_URL,
     }
   }
   
