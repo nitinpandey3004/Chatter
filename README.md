@@ -1,6 +1,9 @@
 # Chatter
 
-## Real Time Chat Application
+## Build and Run
+```shell
+docker-compose up --build
+```
 
 
 ## Images
