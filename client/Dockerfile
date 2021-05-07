@@ -1,16 +1,20 @@
-# Step 1
-FROM node:15-alpine as build-step
-RUN mkdir /app
-WORKDIR /app
-COPY package.json /app
-RUN npm install
+# Dockerfile for React client
 
-COPY . /app
+# Build react client
+FROM node:15-alpine
 
-RUN npm run build
+# Working directory be app
+WORKDIR /usr/src/app
 
-# Stage 2
+COPY package*.json ./
 
-FROM nginx:1.17.1-alpine
+###  Installing dependencies
 
-COPY --from=build-step /app/build /usr/share/nginx/html
+RUN npm install --silent
+
+# copy local files to app folder
+COPY . .
+
+EXPOSE 3000
+
+CMD ["npm","start"]

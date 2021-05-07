@@ -1,3 +1,6 @@
+import dotenv from "dotenv";
+await dotenv.config();
+
 import http from "http";
 import express from "express";
 import logger from "morgan";
@@ -16,9 +19,6 @@ import chatRoomRouter from "./routes/chatRoom.js";
 import deleteRouter from "./routes/delete.js";
 // middlewares
 import { decode } from './middlewares/jwt.js'
-
-import dotenv from "dotenv";
-dotenv.config();
 
 const app = express();
 let whitelist = ['http://localhost:3000','http://localhost:80','http://localhost:4000'];
