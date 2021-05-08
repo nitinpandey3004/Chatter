@@ -91,7 +91,7 @@ const socketio = new io.Server({
   allowEIO3: true,
   // path:"/api/socket.io"
 });
-// socketio.path("/api/socket.io");
+socketio.path("/api/socket.io");
 global.io = socketio.listen(server);
 global.io.on('connection', (client) => {
   new WebSockets().connection(client);

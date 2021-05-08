@@ -12,10 +12,11 @@ import '../../../node_modules/jquery.nicescroll/dist/jquery.nicescroll.js';
 import Constant from '../../config/index';
 
 let socket;
-const ENDPOINT = `${Constant.SERVER_URL}/`;
+const ENDPOINT = `${Constant.SERVER_URL}`;
+const API_ENDPOINT = `${Constant.SERVER_URL}${Constant.API_PREFIX}`;
 
 const getPreviousChatData = async (roomId, token) => {
-  return fetch(`${ENDPOINT}room/${roomId}`, {
+  return fetch(`${API_ENDPOINT}/room/${roomId}`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
@@ -34,11 +35,10 @@ const Chat = ({location}) => {
 
     useEffect(() => {
         const { roomId } = queryString.parse(location.search);
-        console.log("haha: " + ENDPOINT);
 
         socket = io(ENDPOINT, {
             rememberUpgrade: true,
-            // path: "/api/socket.io"
+            path: "/api/socket.io"
         });
 
         setRoomId(roomId);
