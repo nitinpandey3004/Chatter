@@ -21,7 +21,7 @@ import deleteRouter from "./routes/delete.js";
 import { decode } from './middlewares/jwt.js'
 
 const app = express();
-let whitelist = ['http://localhost:3000','http://localhost:80','http://localhost:4000', 'http://localhost'];
+let whitelist = ['http://localhost:3000','http://localhost:80','http://localhost:4000', 'http://localhost', 'https://localhost'];
 let corsOptions = {
     origin: (origin, callback)=>{
       console.log("Checking " + origin);

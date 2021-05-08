@@ -4,9 +4,11 @@ import PropTypes from 'prop-types';
 import Constant from '../../config/index';
 import {useHistory} from "react-router-dom";
 
+const API_ENDPOINT = `${Constant.SERVER_URL}${Constant.API_PREFIX}`;
+
 
 async function loginUser(credentials) {
-    return fetch(`${Constant.SERVER_URL}/login`, {
+    return fetch(`${API_ENDPOINT}/login`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

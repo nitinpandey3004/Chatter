@@ -28,27 +28,31 @@ services:
         # ports: 
         #     - "3000:3000"
         env_file: ./client/.env
-        volumes:
-            - ./client/:/usr/app
-            - /usr/app/node_modules
+        # volumes:
+        #     - ./client/:/usr/app
+        #     - /usr/app/node_modules
         networks: 
             - app-network
         depends_on: 
             - mongo
     webserver:
-        image: nginx:mainline-alpine
+        build: 
+            context: ./nginx-proxy
+            dockerfile: Dockerfile
         container_name: webserver
         restart: unless-stopped
         ports:
             - "80:80"
             - "443:443"
         volumes:
-            - ./client/build:/usr/share/nginx/html
-            - ./nginx-conf:/etc/nginx/conf.d
-            - web-root:/var/www/html
+            # - ./client/build:/usr/share/nginx/html
+            # - ./nginx-proxy:/etc/nginx/conf.d
+            - ./nginx-proxy:/etc/ssl/certs
+            - ./nginx-proxy:/etc/ssl/private
+            # - web-root:/var/www/html
             - certbot-etc:/etc/letsencrypt
             - certbot-var:/var/lib/letsencrypt
-            - dhparam:/etc/ssl/certs
+            # - dhparam:/etc/ssl/certs
         networks: 
             - app-network
         depends_on: 
@@ -82,9 +86,9 @@ volumes:
             type: none
             device: /home/nitinpa/Learning Projects/Chatter/views/
             o: bind
-    dhparam:
-        driver: local
-        driver_opts:
-            type: none
-            device: /home/nitinpa/Learning Projects/Chatter/dhparam/
-            o: bind
+    # dhparam:
+    #     driver: local
+    #     driver_opts:
+    #         type: none
+    #         device: /home/nitinpa/Learning Projects/Chatter/dhparam/
+    #         o: bind
