@@ -21,7 +21,7 @@ import deleteRouter from "./routes/delete.js";
 import { decode } from './middlewares/jwt.js'
 
 const app = express();
-let whitelist = ['http://localhost:3000','http://localhost:80','http://localhost:4000'];
+let whitelist = ['http://localhost:3000','http://localhost:80','http://localhost:4000', 'http://localhost', 'https://localhost'];
 let corsOptions = {
     origin: (origin, callback)=>{
       console.log("Checking " + origin);
@@ -32,7 +32,21 @@ let corsOptions = {
         }
     },credentials: true
 }
-app.use(cors(corsOptions));
+const corsOptionsDelegate = (req, callback) => {
+  let corsOptions;
+  console.log("haha: " + req.url);
+  let isDomainAllowed = whitelist.indexOf(req.header('Origin')) !== -1 || whitelist.indexOf(req.url) !== -1;
+
+  if (isDomainAllowed) {
+      // Enable CORS for this request
+      corsOptions = { origin: true, credentials: true }
+  } else {
+      // Disable CORS for this request
+      corsOptions = { origin: false }
+  }
+  callback(null, corsOptions)
+}
+app.use(cors(corsOptionsDelegate));
 app.use(cors());
 app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -48,10 +62,10 @@ app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-app.use("/", indexRouter);
-app.use("/users", userRouter);
-app.use("/room", decode, chatRoomRouter);
-app.use("/delete", deleteRouter);
+app.use("/api/", indexRouter);
+app.use("/api/users", userRouter);
+app.use("/api/room", decode, chatRoomRouter);
+app.use("/api/delete", deleteRouter);
 
 /** catch 404 and forward to error handler */
 app.use('*', (req, res) => {
@@ -65,15 +79,17 @@ app.use('*', (req, res) => {
 const server = http.createServer(app);
 /** Create socket connection */
 import * as io from "socket.io";
-const socketio = new io.Server({ cors: { 
-  origin: "http://localhost:3000", 
-  noServer: true, 
-  methods: ["GET", "POST"], 
-  transports: ['websocket', 'polling'], 
-  credentials: true 
+const socketio = new io.Server({ 
+  cors: { 
+    origin: "http://localhost:3000", 
+    noServer: true, 
+    methods: ["GET", "POST"], 
+    transports: ['websocket', 'polling'], 
+    credentials: true ,
   }, 
-  allowEIO3: true 
+  allowEIO3: true,
 });
+socketio.path("/api/socket.io");
 global.io = socketio.listen(server);
 global.io.on('connection', (client) => {
   new WebSockets().connection(client);

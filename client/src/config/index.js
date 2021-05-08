@@ -1,3 +1,4 @@
 export default {
-    SERVER_URL: "http://localhost:4000"
+    SERVER_URL: "https://localhost",
+    API_PREFIX: "/api",
 }

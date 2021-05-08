@@ -12,10 +12,11 @@ import '../../../node_modules/jquery.nicescroll/dist/jquery.nicescroll.js';
 import Constant from '../../config/index';
 
 let socket;
-const ENDPOINT = `${Constant.SERVER_URL}/`;
+const ENDPOINT = `${Constant.SERVER_URL}`;
+const API_ENDPOINT = `${Constant.SERVER_URL}${Constant.API_PREFIX}`;
 
 const getPreviousChatData = async (roomId, token) => {
-  return fetch(`${Constant.SERVER_URL}/room/${roomId}`, {
+  return fetch(`${API_ENDPOINT}/room/${roomId}`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
@@ -36,7 +37,8 @@ const Chat = ({location}) => {
         const { roomId } = queryString.parse(location.search);
 
         socket = io(ENDPOINT, {
-            rememberUpgrade: true
+            rememberUpgrade: true,
+            path: "/api/socket.io"
         });
 
         setRoomId(roomId);
@@ -67,6 +69,7 @@ const Chat = ({location}) => {
         event.preventDefault();
 
         if(message) {
+            console.log("sending : " + message);
             socket.emit('sendMessage', {roomId, message}, () => setMessage(''));
         }
     }

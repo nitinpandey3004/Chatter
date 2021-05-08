@@ -5,6 +5,8 @@ import Constant from '../../config/index';
 import useToken from "../../helpers/useToken";
 import './Join.css';
 
+const API_ENDPOINT = `${Constant.SERVER_URL}${Constant.API_PREFIX}`;
+
 // const Join = () => {
 //     const [name, setName] = useState("");
 //     const [room, setRoom] = useState("");
@@ -37,7 +39,7 @@ import './Join.css';
 // };
 
 const joinRoom = async (data, token) => {
-    return fetch(`${Constant.SERVER_URL}/room/initiate`, {
+    return fetch(`${API_ENDPOINT}/room/initiate`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
