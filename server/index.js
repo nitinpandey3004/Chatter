@@ -86,10 +86,8 @@ const socketio = new io.Server({
     methods: ["GET", "POST"], 
     transports: ['websocket', 'polling'], 
     credentials: true ,
-    // path:"/api/socket.io"
   }, 
   allowEIO3: true,
-  // path:"/api/socket.io"
 });
 socketio.path("/api/socket.io");
 global.io = socketio.listen(server);
