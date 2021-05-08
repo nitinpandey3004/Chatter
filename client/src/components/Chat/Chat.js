@@ -15,7 +15,7 @@ let socket;
 const ENDPOINT = `${Constant.SERVER_URL}/`;
 
 const getPreviousChatData = async (roomId, token) => {
-  return fetch(`${Constant.SERVER_URL}/room/${roomId}`, {
+  return fetch(`${ENDPOINT}room/${roomId}`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
@@ -34,9 +34,11 @@ const Chat = ({location}) => {
 
     useEffect(() => {
         const { roomId } = queryString.parse(location.search);
+        console.log("haha: " + ENDPOINT);
 
         socket = io(ENDPOINT, {
-            rememberUpgrade: true
+            rememberUpgrade: true,
+            // path: "/api/socket.io"
         });
 
         setRoomId(roomId);
@@ -67,6 +69,7 @@ const Chat = ({location}) => {
         event.preventDefault();
 
         if(message) {
+            console.log("sending : " + message);
             socket.emit('sendMessage', {roomId, message}, () => setMessage(''));
         }
     }
