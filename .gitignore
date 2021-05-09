@@ -107,3 +107,4 @@ dist
 data
 *.crt
 *.key
+*.pem

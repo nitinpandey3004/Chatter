@@ -2,8 +2,10 @@ import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 import Constant from '../../config/index';
 
+const API_ENDPOINT = `${Constant.SERVER_URL}${Constant.API_PREFIX}`;
+
 async function registerUser(credentials) {
-    return fetch(`${Constant.SERVER_URL}/users`, {
+    return fetch(`${API_ENDPOINT}/users`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

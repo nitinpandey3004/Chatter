@@ -53,11 +53,11 @@ services:
         #     - /usr/app/node_modules
         networks: 
             - app-network
-    webserver:
+    proxy:
         build: 
-            context: ./nginx-proxy
+            context: ./proxy
             dockerfile: Dockerfile
-        container_name: webserver
+        container_name: proxy
         restart: unless-stopped
         ports:
             - "80:80"
@@ -65,11 +65,11 @@ services:
         volumes:
             # - ./client/build:/usr/share/nginx/html
             # - ./nginx-proxy:/etc/nginx/conf.d
-            - ./nginx-proxy:/etc/ssl/certs
-            - ./nginx-proxy:/etc/ssl/private
+            - ./proxy:/etc/ssl/certs
+            # - ./proxy:/etc/ssl/private
             # - web-root:/var/www/html
-            - certbot-etc:/etc/letsencrypt
-            - certbot-var:/var/lib/letsencrypt
+            # - certbot-etc:/etc/letsencrypt
+            # - certbot-var:/var/lib/letsencrypt
             # - dhparam:/etc/ssl/certs
         networks: 
             - app-network
@@ -77,18 +77,18 @@ services:
             - client
             - server
         
-    certbot:
-        image: certbot/certbot
-        container_name: certbot
-        volumes:
-            - certbot-etc:/etc/letsencrypt
-            - certbot-var:/var/lib/letsencrypt
-            - web-root:/var/www/html
-        depends_on:
-            - webserver
-        command: certonly --webroot --webroot-path=/var/www/html --email nitinpandey3004@gmail.com --agree-tos --no-eff-email --staging -d example.com  -d www.example.com
-        networks: 
-            - app-network
+    # certbot:
+    #     image: certbot/certbot
+    #     container_name: certbot
+    #     volumes:
+    #         - certbot-etc:/etc/letsencrypt
+    #         - certbot-var:/var/lib/letsencrypt
+    #         - web-root:/var/www/html
+    #     depends_on:
+    #         - webserver
+    #     command: certonly --webroot --webroot-path=/var/www/html --email nitinpandey3004@gmail.com --agree-tos --no-eff-email --staging -d example.com  -d www.example.com
+    #     networks: 
+    #         - app-network
 
 
 networks:
