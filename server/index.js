@@ -8,6 +8,7 @@ import cors from "cors";
 
 // mongo connection
 import "./config/mongo.js";
+import config from './config/index.js'
 
 // socket configuration
 import WebSockets from "./utils/WebSockets.js";
@@ -77,8 +78,10 @@ app.use('*', (req, res) => {
 
 /** Create HTTP server. */
 const server = http.createServer(app);
+
 /** Create socket connection */
 import * as io from "socket.io";
+import redisAdapter from 'socket.io-redis';
 const socketio = new io.Server({ 
   cors: { 
     origin: "http://localhost:3000", 
@@ -89,6 +92,10 @@ const socketio = new io.Server({
   }, 
   allowEIO3: true,
 });
+socketio.adapter(redisAdapter({
+  host: config.redis.url, 
+  port: config.redis.port, 
+}));
 socketio.path("/api/socket.io");
 global.io = socketio.listen(server);
 global.io.on('connection', (client) => {
