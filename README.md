@@ -1,6 +1,6 @@
 # Chatter
 
-Real Time Chat Application
+Scalable Real Time Chat Application
 
 ## Build and Run
 ```shell
