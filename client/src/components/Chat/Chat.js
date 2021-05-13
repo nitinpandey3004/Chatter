@@ -43,6 +43,14 @@ const Chat = ({location}) => {
             reconnectionDelay: 500,
         });
 
+        socket.on('reconnect', () => {
+          socket.emit('join', { token, roomId }, (error) => {
+              if(error) {
+                  alert(error);
+              }
+          });
+        });
+
         setRoomId(roomId);
 
         socket.emit('join', { token, roomId }, (error) => {
