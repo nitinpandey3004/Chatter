@@ -38,7 +38,9 @@ const Chat = ({location}) => {
 
         socket = io(ENDPOINT, {
             rememberUpgrade: true,
-            path: "/api/socket.io"
+            path: "/api/socket.io",
+            reconnection: true,
+            reconnectionDelay: 500,
         });
 
         setRoomId(roomId);
